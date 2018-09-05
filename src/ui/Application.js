@@ -19,22 +19,35 @@ export default class Application extends React.Component {
         });
     }
 
-    onSubmit() {
-        //fetch here
+    onSubmit = () => {
+        const user = {
+            name: this.state.name,
+            password: this.state.password
+        };
+
+        fetch('api/register', {
+            method: 'POST',
+            body: JSON.stringify(user),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log(data));
     }
 
     redirectToWall() {
 
     }
 
-    renderLoginComponent() {
+    renderRegisterComponent() {
         return (
-            <div className={styles.loginForm}>
-                <div className={styles.loginBlock}>
-                    <h2>Log In</h2>
+            <div className={styles.registerForm}>
+                <div className={styles.registerBlock}>
+                    <h2>Registration</h2>
                     <input placeholder={'Your name'} value={this.state.name} onChange={(e) => this.changeStateProp('name', e.target.value)}/>
                     <input placeholder={'Your password'} value={this.state.password} onChange={(e) => this.changeStateProp('password', e.target.value)}/>
-                    <button onClick={this.onSubmit}>Login</button>
+                    <button onClick={this.onSubmit}>Register</button>
                     <p className={styles.errorBlock}>
 
                     </p>
@@ -44,6 +57,6 @@ export default class Application extends React.Component {
     }
 
     render() {
-        return this.state.loggedIn ? this.redirectToWall() : this.renderLoginComponent();
+        return this.state.loggedIn ? this.redirectToWall() : this.renderRegisterComponent();
     }
 }
